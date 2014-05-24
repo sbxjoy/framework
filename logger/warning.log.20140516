@@ -1,0 +1,1 @@
+ 2014-05-16 16:39:24 select * from user where qid in (?,?,?)

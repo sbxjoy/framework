@@ -1,0 +1,36 @@
+ 2014-05-16 16:33:05 Array
+(
+    [sql] => select * from user where qid in (?,?,?)
+    [values] => Array
+        (
+            [0] => 1
+            [1] => 2
+            [2] => 3
+        )
+
+)
+
+ 2014-05-16 16:38:51 Array
+(
+    [sql] => select * from user where qid in (?,?,?)
+    [values] => Array
+        (
+            [0] => 1
+            [1] => 2
+            [2] => 3
+        )
+
+)
+
+ 2014-05-16 16:39:24 Array
+(
+    [sql] => select * from user where qid in (?,?,?)
+    [values] => Array
+        (
+            [0] => 1
+            [1] => 2
+            [2] => 3
+        )
+
+)
+

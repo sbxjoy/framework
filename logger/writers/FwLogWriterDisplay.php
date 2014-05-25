@@ -1,5 +1,5 @@
 <?php
-class QFrameLogWriterDisplay
+class FwLogWriterDisplay
 {
     /**
      * 日志显示内容
@@ -68,7 +68,7 @@ class QFrameLogWriterDisplay
         }
         $timestamp = date($this->_timeFormat);
         $ip = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
-        $this->_buffer[] = QFrameLog::format($this->_logFormat, $ip, $timestamp, '', $type, $message);
+        $this->_buffer[] = FwLog::format($this->_logFormat, $ip, $timestamp, '', $type, $message);
         return true;
     }/*}}}*/
 

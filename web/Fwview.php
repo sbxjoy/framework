@@ -1,11 +1,11 @@
 <?php
 /**
- * Qihoo PHP FrameWork bootstrap file(QFrame)
+ * Qihoo PHP FrameWork bootstrap file(Fw)
  * @Writen by : cc <chenchao@360.cn>
- * @http://twiki.corp.qihoo.net/twiki/bin/view/Main/NewADDQFrame
+ * @http://twiki.corp.qihoo.net/twiki/bin/view/Main/NewADDFw
  */
 
-class QFrameView
+class FwView
 {
     protected $noViewRender      = false;
     protected $controllerRender  = false;
@@ -39,7 +39,7 @@ class QFrameView
             $this->$key = $val;
             return;
         }
-        QFrameBizResult::ensureNotFalse(false,"Setting private or protected class members is not allowed");
+        FwBizResult::ensureNotFalse(false,"Setting private or protected class members is not allowed");
     }/*}}}*/
 
     public function __get($key)
@@ -79,8 +79,8 @@ class QFrameView
         if(NULL !== $noController) $this->setNoController($noController);
         $spec = $this->getNoController() ? $this->_viewScriptPathNoControllerSpec : $this->_viewScriptPathSpec;
         $path = $this->getViewScript($spec);
-        $scriptPath = QFrameContainer::find('QFrameWeb')->getViewPath().$path;
-        QFrameBizResult::ensureNotFalse(is_file($scriptPath),"Script ($scriptPath) Not Exist !!!!!");
+        $scriptPath = FwContainer::find('FwWeb')->getViewPath().$path;
+        FwBizResult::ensureNotFalse(is_file($scriptPath),"Script ($scriptPath) Not Exist !!!!!");
         return $this->runView($scriptPath);
 	}/*}}}*/
 
@@ -122,11 +122,11 @@ class QFrameView
         $action = self::getScriptAction();
         if(NULL == $action)
         {
-            $action = QFrameWeb::$curAction;
+            $action = FwWeb::$curAction;
         }
-        $controller = QFrameWeb::$curController;
+        $controller = FwWeb::$curController;
         $suffix     = $this->getViewSuffix();
-        $viewPath   = dirname(QFrameContainer::find('QFrameWeb')->getControllerPath());
+        $viewPath   = dirname(FwContainer::find('FwWeb')->getControllerPath());
         $replacements = array(
             ':controller' => str_replace($this->_delimiters,'-',strtolower($controller)),
             ':action'     => str_replace($this->_delimiters,'-',strtolower($action)),

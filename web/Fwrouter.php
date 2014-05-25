@@ -1,11 +1,11 @@
 <?php
 /**
- * Qihoo PHP FrameWork bootstrap file(QFrame)
+ * Qihoo PHP FrameWork bootstrap file(Fw)
  * @Writen by : cc <chenchao@360.cn>
- * @http://add.corp.qihoo.net:8360/display/platform/QFrameRoute
+ * @http://add.corp.qihoo.net:8360/display/platform/FwRoute
  */
 
-class QFrameRouter
+class FwRouter
 {
     protected $_routers = array();
     protected $_useDefaltRoute = true;
@@ -30,9 +30,9 @@ class QFrameRouter
         {
             if ($params = $route->match($requestUri))
             {
-                QFrameContainer::find('QFrameHttp')->setParams($params);
-                QFrameContainer::find('QFrameWeb')->set('curController',$params['controller']);
-                QFrameContainer::find('QFrameWeb')->set('curAction',$params['action']);
+                FwContainer::find('FwHttp')->setParams($params);
+                FwContainer::find('FwWeb')->set('curController',$params['controller']);
+                FwContainer::find('FwWeb')->set('curAction',$params['action']);
                 break;
             }
         }
@@ -40,13 +40,13 @@ class QFrameRouter
 
     protected function addDefaultRoutes()
     {/*{{{*/
-        $handle = QFrameContainer::find('QFrameRouterDefaultRoute');
+        $handle = FwContainer::find('FwRouterDefaultRoute');
         $this->_routers = array_merge(array('default'=>$handle),$this->_routers);
     }/*}}}*/
 
 }
 
-class QFrameRouterDefaultRoute
+class FwRouterDefaultRoute
 {
     protected $_controllerKey = "controller";
     protected $_actionKey     = "action";

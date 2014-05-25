@@ -1,11 +1,11 @@
 <?php
 /**
- * Qihoo PHP FrameWork bootstrap file(QFrame)
+ * Qihoo PHP FrameWork bootstrap file(Fw)
  * @Writen by : cc <chenchao@360.cn>
- * @http://add.corp.qihoo.net:8360/display/platform/QFrameWeb
+ * @http://add.corp.qihoo.net:8360/display/platform/FwWeb
  */
 
-class QFrameWeb
+class FwWeb
 {
     protected $_defaultController = "index";
     protected $_defaultAction     = "index";
@@ -26,7 +26,7 @@ class QFrameWeb
 
     public function set($key,$value)
     {/*{{{*/
-        QFrameBizResult::ensureNotFalse(isset(self::${$key}),"$key is not an valid attr");    
+        FwBizResult::ensureNotFalse(isset(self::${$key}),"$key is not an valid attr");    
         $this->__set($key,$value);
     }/*}}}*/
 
@@ -35,7 +35,7 @@ class QFrameWeb
         try
         {
             $this->processRequest();
-        }catch(QFrameRunException $e)
+        }catch(FwRunException $e)
         {
             $this->processException($e);
         }
@@ -125,11 +125,11 @@ class QFrameWeb
 
     protected function processRequest()
     {/*{{{*/
-        $pathInfo   = QFrameContainer::find('QFrameHttp')->getPathInfo();
+        $pathInfo   = FwContainer::find('FwHttp')->getPathInfo();
         $controller = $this->runController($pathInfo);
-        if(!QFrameContainer::find('QFrameView')->isControllerRender())
+        if(!FwContainer::find('FwView')->isControllerRender())
         {
-            QFrameContainer::find('QFrameView')->renderView();
+            FwContainer::find('FwView')->renderView();
         }
         echo $this->_dispatchBuf;
     }/*}}}*/
@@ -144,7 +144,7 @@ class QFrameWeb
         {
             if( empty(self::$curController) || empty(self::$curAction) )
             {
-                $route = QFrameContainer::find('QFrameRouter')->route($pathInfo);
+                $route = FwContainer::find('FwRouter')->route($pathInfo);
             }
         }
         $this->dispatch(); 
@@ -162,15 +162,15 @@ class QFrameWeb
 
     public function dispatch()
     {/*{{{*/
-        QFrameBizResult::ensureNotFalse(!$this->isDispatched(),"Already Dispatched!!\n");
+        FwBizResult::ensureNotFalse(!$this->isDispatched(),"Already Dispatched!!\n");
         $className = $this->createControllerClassName(self::$curController);
         $classFile = $this->getControllerPath().DIRECTORY_SEPARATOR.$className.'.php';
-        QFrameBizResult::ensureNotFalse(is_file($classFile),"Controller File('$classFile') is Not Exist!!!\n");
+        FwBizResult::ensureNotFalse(is_file($classFile),"Controller File('$classFile') is Not Exist!!!\n");
         //$controller= new $className(); /* avoid '_forward' method repeat exec init function in the same controller*/
-        $controller= QFrameContainer::find($className);
-        QFrameBizResult::ensureNotFalse($controller instanceof QFrameAction,"Controller $className is not an instance of QFrameAction");
+        $controller= FwContainer::find($className);
+        FwBizResult::ensureNotFalse($controller instanceof FwAction,"Controller $className is not an instance of FwAction");
         $action    = $this->createActionName(self::$curAction);
-        QFrameBizResult::ensureNotFalse(method_exists($controller,$action),"Action `$action` is Not Exist!!!\n");
+        FwBizResult::ensureNotFalse(method_exists($controller,$action),"Action `$action` is Not Exist!!!\n");
         $this->setDispatched(true);
         ob_start();
         $controller->dispatch($action);
@@ -191,7 +191,7 @@ class QFrameWeb
     {/*{{{*/
         if($this->throwException())
             throw $e;
-        QFrameContainer::find('QFrameException')->setException($e);
+        FwContainer::find('FwException')->setException($e);
         echo $this->_dispatchBuf;
     }/*}}}*/
 

@@ -1,11 +1,5 @@
 <?php
-/**
- * Qihoo PHP FrameWork bootstrap file(QFrame)
- * @Writen by : cc <chenchao@360.cn>
- * @http://add.corp.qihoo.net:8360/display/platform/QFrameAction
- */
-
-class QFrameAction
+class FwAction
 {
     public function __construct()
     {/*{{{*/
@@ -54,24 +48,24 @@ class QFrameAction
     {/*{{{*/
         if(is_string($spec))
         {
-            QFrameBizResult::ensureFalse('_' == substr($spec, 0, 1),"Setting private or protected class members is not allowed");
+            FwBizResult::ensureFalse('_' == substr($spec, 0, 1),"Setting private or protected class members is not allowed");
             if($dohtmlspecialchars && is_string($value))
             {
                 $value = htmlspecialchars($value);
             }
-            QFrameContainer::find('QFrameView')->$spec = $value;
+            FwContainer::find('FwView')->$spec = $value;
         }elseif(is_array($spec))
         {
             //TODO if(is_array($val))
             foreach($spec as $key=>$val)
             {
-                QFrameBizResult::ensureFalse('_' == substr($key, 0, 1),"Setting private or protected class members is not allowed");
+                FwBizResult::ensureFalse('_' == substr($key, 0, 1),"Setting private or protected class members is not allowed");
                 if(is_string($val))
                 {
-                    QFrameContainer::find('QFrameView')->$key = $dohtmlspecialchars ? htmlspecialchars($val) : $val;
+                    FwContainer::find('FwView')->$key = $dohtmlspecialchars ? htmlspecialchars($val) : $val;
                 }else
                 {
-                    QFrameContainer::find('QFrameView')->$key = $val;
+                    FwContainer::find('FwView')->$key = $val;
                 }
             }
         }
@@ -84,7 +78,7 @@ class QFrameAction
 
     public function setNoViewRender($flag)
     {/*{{{*/
-        return QFrameContainer::find('QFrameView')->setNoRender($flag);
+        return FwContainer::find('FwView')->setNoRender($flag);
     }/*}}}*/
 
     /**
@@ -94,7 +88,7 @@ class QFrameAction
 
     public function getControllerName()
     {/*{{{*/
-        return QFrameWeb::$curController;
+        return FwWeb::$curController;
     }/*}}}*/
 
     /**
@@ -104,7 +98,7 @@ class QFrameAction
 
     public function getActionName()
     {/*{{{*/
-        return QFrameWeb::$curAction;
+        return FwWeb::$curAction;
     }/*}}}*/
 
     /**
@@ -118,21 +112,21 @@ class QFrameAction
 
     public function getParam($key , $default = null)
     {/*{{{*/
-        $value = QFrameContainer::find('QFrameHttp')->get($key);
+        $value = FwContainer::find('FwHttp')->get($key);
 
         return (null==$value && null !== $default) ? $default : $value;
     }/*}}}*/
 
     public function getRequest($key = null , $default = null)
     {/*{{{*/
-        $value = QFrameContainer::find('QFrameHttp')->getRequest($key , $default);
+        $value = FwContainer::find('FwHttp')->getRequest($key , $default);
 
         return $value;
     }/*}}}*/
 
     public function getPost($key = null , $default = null)
     {/*{{{*/
-        $value = QFrameContainer::find('QFrameHttp')->getPost($key , $default);
+        $value = FwContainer::find('FwHttp')->getPost($key , $default);
 
         return $value;
     }/*}}}*/
@@ -147,8 +141,8 @@ class QFrameAction
     public function render($name=null,$noController=false)
     {/*{{{*/
         if(is_null($name)) return;
-        QFrameContainer::find('QFrameView')->setControllerRender(true);
-        return QFrameContainer::find('QFrameView')->render($name,$noController);
+        FwContainer::find('FwView')->setControllerRender(true);
+        return FwContainer::find('FwView')->render($name,$noController);
     }/*}}}*/
 
     /**
@@ -161,23 +155,23 @@ class QFrameAction
     public function setViewSuffix($suffix)
     {/*{{{*/
         if(empty($suffix)) return false;
-        QFrameContainer::find('QFrameView')->setViewSuffix($suffix);
+        FwContainer::find('FwView')->setViewSuffix($suffix);
     }/*}}}*/
 
     public function _forward($action , $controller=null)
     {/*{{{*/
         if(null !== $controller)
         {
-            QFrameContainer::find('QFrameWeb')->setControllerName($controller);
+            FwContainer::find('FwWeb')->setControllerName($controller);
         }
-        QFrameContainer::find('QFrameWeb')->setActionName($action);
-        QFrameContainer::find('QFrameWeb')->setDispatched(false);
-        QFrameContainer::find('QFrameWeb')->dispatch();
+        FwContainer::find('FwWeb')->setActionName($action);
+        FwContainer::find('FwWeb')->setDispatched(false);
+        FwContainer::find('FwWeb')->dispatch();
     }/*}}}*/
 
     public function initView()
     {/*{{{*/
-        $this->view = QFrameContainer::find('QFrameView');
+        $this->view = FwContainer::find('FwView');
     }/*}}}*/
 
 }

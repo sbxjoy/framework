@@ -1,5 +1,5 @@
 <?php
-class QFrameLog
+class FwLog
 {
     /*{{{*/
     const OUTPUT_MODE_FIREPHP = 'firephp'; //将调试信息打印在firebug控制台，需要安装firebug & firephp 插件，只支持firefox
@@ -51,7 +51,7 @@ class QFrameLog
             return $obj;
         }
         $option['filemode'] = $fileMod;
-        $writer = new QFrameLogWriterFile($logPath, $app, $option);
+        $writer = new FwLogWriterFile($logPath, $app, $option);
         $obj = new self($writer);
         return $obj;
     }/*}}}*/
@@ -207,11 +207,11 @@ class QFrameLog
         }
         if($outputMode == self::OUTPUT_MODE_FIREPHP )
         {
-            $writer = new QFrameLogWriterFirephp();
+            $writer = new FwLogWriterFirephp();
         }
         else
         {
-            $writer = new QFrameLogWriterDisplay($outputMode);
+            $writer = new FwLogWriterDisplay($outputMode);
         }
         $outputWriters[$outputMode] = $writer;
         return $writer;

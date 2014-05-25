@@ -1,5 +1,5 @@
 <?php
-class QFramedbTest extends UnitTestCase {
+class FwdbTest extends UnitTestCase {
 	private $arr_master_config = array(
 	"driver"=>"mysql",
 	"host"=>"127.0.0.1",
@@ -32,8 +32,8 @@ class QFramedbTest extends UnitTestCase {
 
 	public function testInit() {
 		try {
-			$this->db = QFrameDB::getInstance($this->arr_master_config);
-		} catch (QFrameDBException $e) {
+			$this->db = FwDB::getInstance($this->arr_master_config);
+		} catch (FwDBException $e) {
 			print $e->getMessage();
 			exit;
 		}
@@ -49,9 +49,9 @@ class QFramedbTest extends UnitTestCase {
 	}
 
 	public function testInstance() {
-		$this->assertTrue(QFrameDB::getInstance($this->arr_master_config) === QFrameDB::getInstance($this->arr_master_config));
-		$this->assertTrue(QFrameDB::getInstance() instanceof QFrameDBPDO);
-		$this->assertNotEqual(QFrameDB::getInstance($this->arr_master_config), QFrameDB::getInstance($this->arr_slave_config));
+		$this->assertTrue(FwDB::getInstance($this->arr_master_config) === FwDB::getInstance($this->arr_master_config));
+		$this->assertTrue(FwDB::getInstance() instanceof FwDBPDO);
+		$this->assertNotEqual(FwDB::getInstance($this->arr_master_config), FwDB::getInstance($this->arr_slave_config));
 	}
 
 	public function testCRUD() {
@@ -129,21 +129,21 @@ class QFramedbTest extends UnitTestCase {
 		$sql = "select * from user where 1=1";
 		try {
 			$this->db->getAll($sql);
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			$this->assertPattern("/SQL注入/", $e->getMessage());
 		}
 
 		$sql = "insert into user set name='aaa'";
 		try {
 			$this->db->execute($sql);
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			$this->assertPattern("/SQL注入/", $e->getMessage());
 		}
 
 		$sql = "delete from user";
 		try {
 			$this->db->execute($sql);
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			$this->assertPattern("/SQL注入/", $e->getMessage());
 		}
 
@@ -155,32 +155,32 @@ class QFramedbTest extends UnitTestCase {
 		try {
 			$this->db->startTrans();
 			$this->db->startTrans();
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			$this->assertPattern("/之前开启的事务尚未结束，事务处理不能嵌套操作/", $e->getMessage());
 			$this->db->rollback();
 		}
 
 		try {
 			$this->db->commit();
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			$this->assertPattern("/之前开启的事务已经被提交或没有开启，请仔细查看事务处理过程中的操作语句/", $e->getMessage());
 		}
 
 		try {
 			$this->db->rollback();
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			$this->assertPattern("/之前开启的事务已经被提交或没有开启，请仔细查看事务处理过程中的操作语句/", $e->getMessage());
 		}
 
 		try {
 			$this->db->execute("set autocommit=1");
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			$this->assertPattern("/为避免操作异常，请使用包装后的事务处理接口/", $e->getMessage());
 		}
 
 		try {
 			$this->db->execute("set                     autocommit=1");
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			$this->assertPattern("/为避免操作异常，请使用包装后的事务处理接口/", $e->getMessage());
 		}
 
@@ -197,7 +197,7 @@ class QFramedbTest extends UnitTestCase {
 			$this->db->execute("insert into userinfo set userid=?, birth=?", array($userid, 198132));
 
 			$this->db->commit();
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			print $e->getMessage()."\n";
 			$this->db->rollback();
 		}
@@ -214,7 +214,7 @@ class QFramedbTest extends UnitTestCase {
 			$this->db->execute("insert into userinfo set userid=?, birth=?", array(7, 198132));
 
 			$this->db->commit();
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			$this->assertPattern("/Duplicate entry/", $e->getMessage());
 			$this->db->rollback();
 		}
@@ -233,7 +233,7 @@ class QFramedbTest extends UnitTestCase {
 			$this->db->execute("insert into userinfo set userid=?, birth=?", array(7, 198132));
 
 			$this->db->commit();
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			$this->assertPattern("/Duplicate entry/", $e->getMessage());
 			$this->db->rollback();
 		}
@@ -252,20 +252,20 @@ class QFramedbTest extends UnitTestCase {
 			sleep(2);
 
 			$this->db->execute("insert into user set name=?", "_cuowu1");
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			$this->assertPattern("/Duplicate entry/", $e->getMessage());
 		}
 
 		sleep(2);
 		try {
 			$this->db->execute("insert into user set name=?", "_cuowu2");
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			print $e->getMessage()."\n";
 		}
 
 		try {
 			$this->db->rollback();
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			print $e->getMessage();
 		}
 
@@ -305,7 +305,7 @@ class QFramedbTest extends UnitTestCase {
 			sleep(2);
 
 			$this->db->getOne("select 1");
-		} catch (QFrameDBException $e) {
+		} catch (FwDBException $e) {
 			print $e->getMessage()."\n";
 			$this->assertPattern("/Lost connection/", $e->getMessage());
 		}

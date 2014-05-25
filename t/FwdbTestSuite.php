@@ -8,12 +8,12 @@ function __autoload($class) {
 }
 
 include_once("simpletest/autorun.php");
-//include_once("QFramedb.php");
+//include_once("Fwdb.php");
 
 class AllTests extends TestSuite {
 	function AllTests() {
 		$files = array("");
-		$this->TestSuite('QFrameDB');
+		$this->TestSuite('FwDB');
 		$dir = opendir(dirname(__FILE__));
 		while(false != ($entry = readdir($dir))) {
 			if(is_file(dirname(__FILE__)."/".$entry) && !in_array($entry, array(".", "..")) && $entry != basename(__FILE__) && end(explode(".", $entry)) != "swp" && !preg_match("/mock/i", $entry)) {

@@ -1,5 +1,5 @@
 <?php
-class QFrameLogWriterFirephp
+class FwLogWriterFirephp
 {
     /**
      * 时间显示格式

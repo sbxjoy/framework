@@ -25,9 +25,9 @@ sh project/autoload_builder.sh
 
 if test -e "Loader.php"
 then
-    content="install QFrame success!\n\n"
+    content="install Fw success!\n\n"
 else
-    content="install QFrame failed!\n\n"
+    content="install Fw failed!\n\n"
 fi
 
 echo $content

@@ -7,13 +7,12 @@ class FwBase
     
     public static function getVersion()
     {/*{{{*/
-        return 'QFrame_1.0.3';
+        return 'Fw_0.0.1';
     }/*}}}*/
 
     public static function createWebApp()
     {/*{{{*/
-        QFrameUtil::sendSDKMsg(self::getVersion());
-        return QFrameContainer::find('QFrameWeb'); 
+        return FwContainer::find('FwWeb'); 
     }/*}}}*/
 
 }

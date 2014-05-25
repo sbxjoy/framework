@@ -1,5 +1,5 @@
 <?php
-class QFrameLogWriterFile 
+class FwLogWriterFile 
 {
     /**
      * 日志文件命名格式
@@ -171,7 +171,7 @@ class QFrameLogWriterFile
     {/*{{{*/
         $timestamp = date($this->_timeFormat, time());
         $ip = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
-        return QFrameLog::format($this->_logFormat, $ip, $timestamp, $this->_ident, $type, $message);
+        return FwLog::format($this->_logFormat, $ip, $timestamp, $this->_ident, $type, $message);
     }/*}}}*/
 
     /**
